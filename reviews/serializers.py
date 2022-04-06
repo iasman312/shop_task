@@ -24,3 +24,26 @@ class ReviewSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 
+class ShopListReviewSerializer(serializers.ModelSerializer):
+    domain_name = serializers.CharField()
+    review_count = serializers.IntegerField()
+
+    class Meta:
+        fields = (
+            'domain_name',
+            'review_count',
+        )
+        model = Review
+
+
+class ShopListRatingSerializer(serializers.ModelSerializer):
+    domain_name = serializers.CharField()
+    avg_star_count = serializers.IntegerField()
+
+    class Meta:
+        fields = (
+            'domain_name',
+            'avg_star_count',
+        )
+        model = Review
+
