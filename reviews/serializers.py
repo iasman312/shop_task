@@ -12,7 +12,9 @@ class ReviewSerializer(serializers.ModelSerializer):
             'text',
             'star_count',
             'author_email',
+            'created_at'
         )
+        read_only_fields = ('created_at',)
         model = Review
 
     def create(self, validated_data):

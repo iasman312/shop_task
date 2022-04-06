@@ -21,11 +21,18 @@ class ListShopAPIView(ListAPIView):
     serializer_class = ShopListReviewSerializer
 
     def get_queryset(self):
-        if self.request.GET.get('review_count', None):
+        method = self.request.GET
+        if method.get('review_count', None):
             queryset = Review.objects.values('domain_name').annotate(review_count=Count('id')).order_by('-review_count')
-        elif self.request.GET.get('rating_count', None):
+        elif method.get('rating_count', None):
             self.serializer_class = ShopListRatingSerializer
             queryset = Review.objects.values('domain_name').annotate(avg_star_count=Avg('star_count')).order_by('-avg_star_count')
+        elif method.get('author_email', None):
+            self.serializer_class = ReviewSerializer
+            queryset = Review.objects.filter(author_email=method.get('author_email')).order_by('created_at')
+        elif method.get('name', None):
+            self.serializer_class = ReviewSerializer
+            queryset = Review.objects.filter(domain_name=method.get('name'))
         else:
             self.serializer_class = ReviewSerializer
             queryset = Review.objects.all()

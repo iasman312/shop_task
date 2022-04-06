@@ -3,7 +3,16 @@ from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
-class Review(models.Model):
+class BaseModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+
+class Review(BaseModel):
     ecommerce_link = models.URLField(
         _('Ecommerce link'),
         max_length=500,
